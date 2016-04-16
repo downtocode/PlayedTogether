@@ -69,12 +69,10 @@ def overlap(player1, player2):
     return teams
 
 # Get args from the command line
-# print 'Enter name of the first player: '
-# p1 = raw_input()
-p1 = 'Defoe'
-# print 'Enter name of the second player: '
-# p2 = raw_input()
-p2 = 'Michael Carrick'
+print 'Enter name of the first player: '
+p1 = raw_input()
+print 'Enter name of the second player: '
+p2 = raw_input()
 page1 = getPage(p1)
 page2 = getPage(p2)
 Defoe,Bassong = buildDictionaries(page1, page2)
