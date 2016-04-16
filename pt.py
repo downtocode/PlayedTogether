@@ -4,9 +4,6 @@ from lxml import html
 import time
 from datetime import date, datetime
 
-# Get the players' names
-# Try to perform a search on soccerbase.com
-
 # Gets the page for a player given the player's full name
 def getPage(playerName):
     searchTerm = '+'.join(playerName.split())
@@ -59,22 +56,25 @@ def overlap(player1, player2):
     teams = {}
     for team in player1:
         if team in player2:
-            s1 = player1[team][0][0]
-            e1 = player1[team][0][1]
-            s2 = player2[team][0][0]
-            e2 = player2[team][0][1]
-            if s2 <= e1 and s1 <= e2:
-                frm = max(s1,s2).strftime("%d %b, %y")
-                to = min(e1,e2).strftime("%d %b, %y")
-                teams[team] = (frm, to)
+            for dates in player1[team]:
+                for dates2 in player2[team]:
+                    s1 = dates[0]
+                    e1 = dates[1]
+                    s2 = dates2[0]
+                    e2 = dates2[1]
+                    if s2 <= e1 and s1 <= e2:
+                        frm = max(s1,s2).strftime("%d %b, %y")
+                        to = min(e1,e2).strftime("%d %b, %y")
+                        teams[team] = (frm, to)
     return teams
 
 # Get args from the command line
-print 'Enter name of the first player: '
-p1 = raw_input()
-print 'Enter name of the second player: '
-p2 = raw_input()
-
+# print 'Enter name of the first player: '
+# p1 = raw_input()
+p1 = 'Defoe'
+# print 'Enter name of the second player: '
+# p2 = raw_input()
+p2 = 'Michael Carrick'
 page1 = getPage(p1)
 page2 = getPage(p2)
 Defoe,Bassong = buildDictionaries(page1, page2)
@@ -82,6 +82,3 @@ print p1 + ' and ' + p2 + ' were teammates at: '
 ans = overlap(Defoe, Bassong)
 for key in ans:
     print '* ' + key + ' from ' + ans[key][0] + ' to ' + ans[key][1]
-# print overlap(Defoe, Bassong)
-# print Defoe
-# print Bassong
