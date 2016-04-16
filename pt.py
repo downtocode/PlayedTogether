@@ -76,7 +76,10 @@ p2 = raw_input()
 page1 = getPage(p1)
 page2 = getPage(p2)
 Defoe,Bassong = buildDictionaries(page1, page2)
-print p1 + ' and ' + p2 + ' were teammates at: '
 ans = overlap(Defoe, Bassong)
-for key in ans:
-    print '* ' + key + ' from ' + ans[key][0] + ' to ' + ans[key][1]
+if ans:
+    print p1 + ' and ' + p2 + ' were teammates at: '
+    for key in ans:
+        print '* ' + key + ' from ' + ans[key][0] + ' to ' + ans[key][1]
+else:
+    print p1 + ' and ' + p2 + ' have never been teammates'
