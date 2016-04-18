@@ -3,5 +3,6 @@ This is a simple Python scraper that helps you determine whether two football (s
 
 Requires Python2 to run do:
 ```bash
+$ pip install -r requirements.txt
 $ python pt.py
 ```
