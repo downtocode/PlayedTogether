@@ -7,7 +7,11 @@ from datetime import date, datetime
 # Gets the page for a player given the player's full name
 def getPage(playerName):
     searchTerm = '+'.join(playerName.split())
-    return requests.get('http://www.soccerbase.com/players/home.sd?search=' + searchTerm)
+    response = requests.get('http://www.soccerbase.com/players/home.sd?search=' + searchTerm)
+    if (response.status_code == 200):
+        return response
+    else:
+        return None
 
 # Takes the two player pages and returns two dictionaries for the two players as a tuple
 def buildDictionaries(page1, page2):
@@ -75,11 +79,23 @@ print 'Enter name of the second player: '
 p2 = raw_input()
 page1 = getPage(p1)
 page2 = getPage(p2)
-Defoe,Bassong = buildDictionaries(page1, page2)
-ans = overlap(Defoe, Bassong)
-if ans:
-    print p1 + ' and ' + p2 + ' were teammates at: '
-    for key in ans:
-        print '* ' + key + ' from ' + ans[key][0] + ' to ' + ans[key][1]
+if page1 == None:
+    print 'No results found for ' + p1
+    print 'Exiting...'
+
+elif page2 == None:
+    print 'No results found for ' + p2
+    print 'Exiting...'
+
 else:
-    print p1 + ' and ' + p2 + ' have never been teammates'
+    try:
+        Defoe,Bassong = buildDictionaries(page1, page2)
+        ans = overlap(Defoe, Bassong)
+        if ans:
+            print p1 + ' and ' + p2 + ' were teammates at: '
+            for key in ans:
+                print '* ' + key + ' from ' + ans[key][0] + ' to ' + ans[key][1]
+        else:
+            print p1 + ' and ' + p2 + ' have never been teammates'
+    except Exception as e:
+        print 'A problem occured while trying to compute teammateship for your two players'
